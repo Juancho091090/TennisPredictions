@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2, p {
+            text-align: center;
+            color: #333;
+        }
+        .prediction-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            margin: 0 auto;
+            width: 600px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="number"], select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        .prediction-result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ title }}</h1>
+    <p>{{ objective }}</p>
+    <p>{{ description }}</p>
+
+    <div class="prediction-form">
+        <h2>Ingrese el ranking de los jugadores y la superficie:</h2>
+        <form method="POST" action="/predict">
+            <label for="rank1">Ranking Jugador 1:</label>
+            <input type="number" id="rank1" name="rank1" required>
+
+            <label for="rank2">Ranking Jugador 2:</label>
+            <input type="number" id="rank2" name="rank2" required>
+
+            <label for="surface">Superficie:</label>
+            <select id="surface" name="surface">
+                <option value="carpet">Carpet</option>
+                <option value="clay">Clay</option>
+                <option value="grass">Grass</option>
+                <option value="hard">Hard</option>
+            </select>
+
+            <button type="submit">Predecir Probabilidad</button>
+        </form>
+        {% if prediction_result %}
+            <div class="prediction-result">
+                <h2>Resultado de la Predicción:</h2>
+                <p>{{ prediction_result }}</p>
+                {% if plot_url %}
+                    <h2>Visualización:</h2>
+                    <img src="data:image/png;base64,{{ plot_url }}" alt="Probabilidad de Victoria">
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
